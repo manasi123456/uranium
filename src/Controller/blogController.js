@@ -2,6 +2,7 @@ const BlogModel = require('../Models/BlogModel')
 const authorModel = require('../Models/AuthorModel')
 
 const createBlog = async function (req, res) {
+    try {
   let data = req.body
   let checkId = data.authorId
   console.log(checkId)
@@ -15,12 +16,16 @@ const createBlog = async function (req, res) {
 
   let savedData = await BlogModel.create(data)
   res.status(201).send({ data: savedData })
+} catch (err) {
+    console.log(err)
+    res.status(500).send({ err: 'server not found' })
+  }
 }
 
 const getBlogs = async (req, res) => {
   try {
     let myquery = req.query
-    let data = await BlogModel.find({ isPublished: true, isDeleted: false })
+    let data = await BlogModel.find({isPublished: true, isDeleted: false });
     console.log(data)
     if (!data) {
       res.status(404).send({ err: 'data not found' })
@@ -42,6 +47,7 @@ const updateBlog = async (req, res) => {
       { _id: Id },
       {
         title: Data.title,
+        tags: Data.tags,
         body: Data.body,
       },
       { returnDocument: 'after' },
