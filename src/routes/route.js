@@ -15,4 +15,5 @@ router.put('/deleteblogs/:blogsId', blogController.deleteBlog)
 
 router.put('/delete', blogController.deleteByParams)
 
-module.exports = router
+module.exports = router    
+   

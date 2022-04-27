@@ -25,16 +25,17 @@ const createAuthor = async (req, res) => {
 
 
     if(!myTitle) {
-      res.status(401).send({error: "title should be Mr or Mrs or Miss"})
+      res.status(401).send({error: "title is not present"})
     }
 
     if(!(myTitle == "Mrs" || myTitle == "Mr" || myTitle == "Miss")) {
-             res.status(401).send({error : "title is not correct "})
+             res.status(401).send({error : "title has to be Mr or Mrs or Miss "})
     }
 
     if(!myPassword) {
       res.status(401).send({error: "password is missing"})
     }
+    
     if (isPasswordValidate === false) {
       res.status(401).send({error : "password isn't validate, please make sure length is minimum 8, should have one uppercase and lowercase character and Number also and donot use space and have a special character"})
     }

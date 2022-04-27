@@ -12,6 +12,7 @@ const createBlog = async function (req, res) {
   if (!myTitle) {
     res.status(401).send({error : "Title missing"})
   }
+
   if (myTitle.length<2) {
     res.status(401).send({error : "length of title must be greater than 2"})
   }
@@ -19,6 +20,7 @@ const createBlog = async function (req, res) {
   if (!myBody) {
     res.status(401).send({error : "Body missing"})
   }
+
   if (myBody.length<50) {
     res.status(401).send({error : "length of body must be greater than 50"})
   }
@@ -31,6 +33,7 @@ const createBlog = async function (req, res) {
   if (!checkId) {
     return res.status(401).send({ msg: 'please enter authorId' })
   }
+
   let validId = await authorModel.findById(checkId)
   if (!validId) {
     return res.status(401).send({ msg: 'authorId is not correct' })
@@ -42,7 +45,7 @@ const createBlog = async function (req, res) {
  
 catch (err) {
   console.log(err)
-  res.status(500).send({ err: 'server not found' })
+  res.status(500).send({ err: err.message })
 }
 }
 
@@ -50,9 +53,9 @@ const getBlogs = async (req, res) => {
   try {
     let myAuthor = req.query.authorsId
     let myCategory = req.query.category
-    if (!myAuthor || !myCategory) {
-      res.status(401).send({error : "authorId and category is not present"})
-    }
+    // if (!myAuthor || !myCategory) {
+    //   res.status(401).send({error : "authorId and category is not present"})
+    // }
 
     if (!(myAuthor.match(/^[0-9a-fA-F]{24}$/))) {
       res.status(401).send({error: "authors Id is not valid"})
@@ -62,12 +65,12 @@ const getBlogs = async (req, res) => {
     let data = await BlogModel.find({ isPublished: true, isDeleted: false })
     console.log(data)
     if (!data) {
-      res.status(404).send({ err: 'data not found' })
+      res.status(404).send({ err: 'data not found' }) 
     }
     res.status(200).send({ msg: data })
   } catch (err) {
     console.log(err)
-    res.status(500).send({ err: 'server not found' })
+    res.status(500).send({ err: 'server not found' }) 
   }
 }
 
@@ -169,7 +172,7 @@ const deleteByParams = async (req, res) => {
         .status(401)
         .send({ error: 'Inavlid Id---Invalid Length of Id' })
     }
-    const isAuthor = await authorModel.findById({authorsId})
+    const isAuthor = await authorModel.findById(authorsId)
     if (!isAuthor) {
       return res
         .status(404)
@@ -188,7 +191,7 @@ const deleteByParams = async (req, res) => {
       },
       { isDeleted: true, deletedAt: Date() },
     )
-    console.log(deletedDoc)
+    console.log(deletedDoc)  
     if (!deletedDoc) {
       res
         .status(404)
@@ -208,4 +211,4 @@ module.exports.getBlogs = getBlogs
 module.exports.updateBlog = updateBlog
 module.exports.deleteBlog = deleteBlog
 module.exports.deleteByParams = deleteByParams
-  
+    
