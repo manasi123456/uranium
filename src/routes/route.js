@@ -8,9 +8,9 @@ router.post('/authors', authorController.createAuthor)
 
 router.post('/blogs', blogController.createBlog)
 
-router.get('/getblogs', onlymiddleware.mid1, blogController.getBlogs)
+router.get('/getblogs',  blogController.getBlogs)
 
-router.put('/blogs/:blogsId', onlymiddleware.mid2,  blogController.updateBlog)
+router.put('/blogs/:blogsId', onlymiddleware.mid1,  blogController.updateBlog)
 
 router.put('/deleteblogs/:blogsId', blogController.deleteBlog)
 

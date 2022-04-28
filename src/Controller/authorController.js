@@ -88,11 +88,7 @@ const loginUser = async function (req,res) {
     res.send({ status: true, data: token });
   };
 
-    
-
 
 module.exports.loginUser = loginUser
-
-
 module.exports.createAuthor = createAuthor    
            

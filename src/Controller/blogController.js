@@ -1,5 +1,6 @@
 const BlogModel = require('../Models/BlogModel')
 const authorModel = require('../Models/AuthorModel')
+const jwt = require('jsonwebtoken')
 
 const createBlog = async function (req, res) {
   try {
@@ -208,7 +209,6 @@ const deleteByParams = async (req, res) => {
     }
   }
   
-
 
 module.exports.createBlog = createBlog
 module.exports.getBlogs = getBlogs
