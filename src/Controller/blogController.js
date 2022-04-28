@@ -53,9 +53,12 @@ const getBlogs = async (req, res) => {
   try {
     let myAuthor = req.query.authorsId
     let myCategory = req.query.category
-    if (!myAuthor || !myCategory) {
-      res.status(401).send({error : "authorId and category is not present"})
+    if (!myAuthor) {
+      res.status(401).send({error : "authorId is not present"})
     }
+    // if (!myCategory){
+    //   res.status(401).send({error : "category is not present"})
+    // }
 
     if (!(myAuthor.match(/^[0-9a-fA-F]{24}$/))) {
       res.status(401).send({error: "authors Id is not valid"})
@@ -76,6 +79,7 @@ const getBlogs = async (req, res) => {
 
 const updateBlog = async (req, res) => {
   try {
+    // const { id, tags, subcategory} = Data  and $addtoset
     let Data = req.body
     let Id = req.params.blogsId
     let tags = req.body.tags

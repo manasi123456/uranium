@@ -1,4 +1,5 @@
 const authorModel = require('../Models/AuthorModel')
+const jwt = require('jsonwebtoken')
 var validator = require('email-validator')
 var passwordValidator = require('password-validator')
 
@@ -62,5 +63,36 @@ const createAuthor = async (req, res) => {
   }
 }
 
-module.exports = { createAuthor }    
+
+const loginUser = async function (req,res) {
+  let checkEmail = req.body.email
+  let checkPassword = req.body.password
+  
+
+  let user = await authorModel.findOne({ emailId: checkEmail, password: checkPassword });
+ 
+  if(!user) {
+    res.status(404).send({error : "no author found with the email id given"})
+  }
+
+    let token = jwt.sign(
+      {
+        userId: user._id.toString(),
+        batch: "uranium",
+        organisation: "FUnctionUp",
+      },
+      "functionup-uranium"
+    );
+    // console.log(token)
+    res.setHeader("x-auth-token", token);
+    res.send({ status: true, data: token });
+  };
+
+    
+
+
+module.exports.loginUser = loginUser
+
+
+module.exports.createAuthor = createAuthor    
            
