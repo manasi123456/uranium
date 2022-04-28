@@ -18,7 +18,7 @@ const createBlog = async function (req, res) {
   }
  
   if (!myBody) {
-    res.status(401).send({error : "Body missing"})
+    res.status(401).send({error : "Body missing"})  
   }
 
   if (myBody.length<50) {
@@ -53,9 +53,9 @@ const getBlogs = async (req, res) => {
   try {
     let myAuthor = req.query.authorsId
     let myCategory = req.query.category
-    // if (!myAuthor || !myCategory) {
-    //   res.status(401).send({error : "authorId and category is not present"})
-    // }
+    if (!myAuthor || !myCategory) {
+      res.status(401).send({error : "authorId and category is not present"})
+    }
 
     if (!(myAuthor.match(/^[0-9a-fA-F]{24}$/))) {
       res.status(401).send({error: "authors Id is not valid"})
@@ -123,12 +123,12 @@ const deleteBlog = async (req, res) => {
       res.status(401).send({error: "authors Id is not valid"})
       // Yes, it's a valid ObjectId, proceed with `findById` call. 
     }
-    console.log(Id)
-    if (Id.length != 24) {
-      return res
-        .status(401)
-        .send({ error: 'Inavlid Id---Invalid Length of Id' })
-    }
+    // console.log(Id)
+    // if (Id.length != 24) {
+    //   return res
+    //     .status(401)
+    //     .send({ error: 'Inavlid Id---Invalid Length of Id' })
+    // }
     const isAuthor = authorModel.find({ _id: Id })
     if (!isAuthor) {
       return res
@@ -167,11 +167,11 @@ const deleteByParams = async (req, res) => {
     if (!Data) {
       res.status(404).send({ error: 'Inavlid query---No Data in query' })
     }
-    if (authorsId.length != 24) {
-      return res
-        .status(401)
-        .send({ error: 'Inavlid Id---Invalid Length of Id' })
-    }
+    // if (authorsId.length != 24) {
+    //   return res
+    //     .status(401)
+    //     .send({ error: 'Inavlid Id---Invalid Length of Id' })
+    // }
     const isAuthor = await authorModel.findById(authorsId)
     if (!isAuthor) {
       return res

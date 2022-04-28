@@ -16,8 +16,7 @@ const blogSchema = new mongoose.Schema(
       ref: 'Author',
     },
     tags: {
-      type: [String],
-      // required: true, // this is not mandatory // its printing null null 
+      type: [String], 
     },
     category: {
       type: String, 
@@ -47,3 +46,4 @@ const blogSchema = new mongoose.Schema(
 )
 
 module.exports = mongoose.model('blog', blogSchema)
+
