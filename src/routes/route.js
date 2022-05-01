@@ -14,7 +14,7 @@ router.put('/blogs/:blogsId',middle.authentication, middle.deleteandUpdateBlogBy
 
 router.put('/deleteblogs/:blogsId', middle.authentication, middle.deleteandUpdateBlogById, blogController.deleteBlog)
 
-router.put('/delete', middle.authentication, middle.deleteBlogbyParams,  blogController.deleteByParams)
+router.delete('/delete', middle.authentication, middle.deleteBlogbyParams,  blogController.deleteByParams)
 
 router.post('/login', authorController.loginUser )
 

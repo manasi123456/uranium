@@ -40,7 +40,7 @@ const deleteandUpdateBlogById=async(req,res,next)=>{
 const deleteBlogbyParams= async (req,res,next)=>{
      let token = req.headers["x-api-key" || "X-Api-Key"]
      let decodedToken = jwt.verify(token,"functionup-uranium")
-     let { authorId, isPublished, tags, category, subcategory } = req.query
+     let { authorsId, isPublished, tags, category, subcategory } = req.query
      let blog = await blogModel.find({$or:[{authorId:authorsId},{isPublished:isPublished},{tags:tags}, {category:category}, {subcategory:subcategory}]})
      if(blog[0].authorId!=decodedToken.userId){
          res.status(401).send({ error: "you are not authourized to change other user document " })
