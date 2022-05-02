@@ -28,6 +28,7 @@ const createBlog = async function (req, res) {
     if (!category) {
       res.status(401).send({ error: "category is missing" })
     }
+
     if (!authorId) {
       return res.status(401).send({ msg: 'please enter authorId' })
     }
@@ -76,6 +77,7 @@ const updateBlog = async (req, res) => {
     let tags = req.body.tags
     let subcategory = req.body.subcategory
     let user = await blogModel.findById(Id)
+  
     let updatedTags = user.tags
     if (tags) {
       updatedTags.push(tags)
@@ -132,10 +134,11 @@ const deleteBlog = async (req, res) => {
   }
 }
 
-
 const deleteByParams = async (req, res) => {
   try {
+
     let { authorsId, isPublished, tags, category, subcategory } = req.query
+
 
     if (!req.query) {
       return res
@@ -143,8 +146,9 @@ const deleteByParams = async (req, res) => {
         .send({ error: 'Inavlid Input---Query shoud not be emplpty' })
     }
 
+
     let deletedDoc = await blogModel.updateMany({
-      isDeleted: false,  $or: [{ authorId: authorsId },
+      isDeleted: false, $or: [{ authorId: authorsId },
       { isPublished: isPublished },
       { tags: tags },
       { category: category },
@@ -155,13 +159,9 @@ const deleteByParams = async (req, res) => {
     if (!deletedDoc) {
       res
         .status(404)
-        .send({ error: 'Document not found / given data not exists/ is Already Deleted' })
+        .send({status:false, msg: 'Document not found / given data not exists/ is Already Deleted' })
     }
-    res.status(200).send({ Updates: deletedDoc })
-
-    const withTags = blogModel.findOneAndUpdate({ tags: { $contains: tags } }, { isDeleted: true, deletedAt: Date() }, { returnDocument: 'after' })
-
-    console.log(withTags);
+    res.status(200).send({status:true, Updates: deletedDoc })
   } catch (err) {
     console.log(err)
     res.status(500).send({ msg: err.message })
