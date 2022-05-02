@@ -31,7 +31,7 @@ const deleteandUpdateBlogById=async(req,res,next)=>{
     }
     console.log(decodedToken.userId)
     if(blog.authorId!=decodedToken.userId){
-        res.status(401).send({ error: "you are not authourized to change other user document " })
+        res.status(401).send({ error: "you are not authourized to change other user document" })
     }
     next()
 }

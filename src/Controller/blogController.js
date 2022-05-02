@@ -28,7 +28,7 @@ const createBlog = async function (req, res) {
     if (!category) {
       res.status(401).send({ error: "category is missing" })
     }
-    
+
     if (!authorId) {
       return res.status(401).send({ msg: 'please enter authorId' })
     }
@@ -77,6 +77,7 @@ const updateBlog = async (req, res) => {
     let tags = req.body.tags
     let subcategory = req.body.subcategory
     let user = await blogModel.findById(Id)
+  
     let updatedTags = user.tags
     if (tags) {
       updatedTags.push(tags)

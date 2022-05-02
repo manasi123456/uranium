@@ -10,7 +10,7 @@ const createAuthor = async (req, res) => {
     var schema = new passwordValidator ()
     schema.is().min(8).is().max(100).has().uppercase().has().lowercase().has().digits(2).has().not().spaces().is().not().oneOf(["Passw0rd", "Password123", "myPassword@123"])
     const isPasswordValidate = schema.validate (password)
-    console.log(isPasswordValidate)
+    
 
     if (!fname) {
       res.status(401).send({error: "fname is missing"})
