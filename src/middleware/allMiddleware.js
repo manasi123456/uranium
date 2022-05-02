@@ -25,7 +25,7 @@ const deleteandUpdateBlogById=async(req,res,next)=>{
         res.status(401).send({ error: "invalid Id " })
     }
     let blog = await blogModel.findById(Id)
-    console.log(blog)
+    // console.log(blog)
     if(!blog){
         res.status(404).send({ error: "document not found " })
     }
@@ -36,17 +36,18 @@ const deleteandUpdateBlogById=async(req,res,next)=>{
     next()
 }
 
-
 const deleteBlogbyParams= async (req,res,next)=>{
      let token = req.headers["x-api-key" || "X-Api-Key"]
      let decodedToken = jwt.verify(token,"functionup-uranium")
-     let { authorId, isPublished, tags, category, subcategory } = req.query
-     let blog = await blogModel.find({$or:[{authorId:authorsId},{isPublished:isPublished},{tags:tags}, {category:category}, {subcategory:subcategory}]})
-     if(blog[0].authorId!=decodedToken.userId){
-         res.status(401).send({ error: "you are not authourized to change other user document " })
+     let { authorsId, isPublished, tags, category, subcategory } = req.query
+     let blog = await blogModel.findOne({authorId : decodedToken.userId, $or:[{authorId:authorsId},{isPublished:isPublished},{tags:tags}, {category:category}, {subcategory:subcategory}]})
+    
+     if (!blog){
+        res.status(404).send({ error: "either authorsId or attribute is incorrect/ you are not authourized / there is no document with this key value for this user logged in" })
      }
+ 
      next()
-}
+} 
 
 
 module.exports.deleteBlogbyParams = deleteBlogbyParams
