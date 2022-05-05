@@ -48,6 +48,8 @@ const createIntern = async function (req, res) {
         .status(400)
         .send({ status: false, message: "Email is required" });
     }
+    let checkEmail = await internModel.findOne({email: requestBody.email })
+            if (checkEmail) return res.status(400).send({ msg: "Email already exist" })
 
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
       return res
@@ -60,6 +62,9 @@ const createIntern = async function (req, res) {
         .status(400)
         .send({ Status: false, message: "Mobile Number is required" });
     }
+    let checkMobile = await internModel.findOne({mobile: requestBody.mobile })
+            if (checkMobile) return res.status(400).send({ msg: "Mobile Number already exist" })
+    
 
     if (
       !/^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(

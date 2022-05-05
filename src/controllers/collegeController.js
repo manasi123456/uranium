@@ -29,7 +29,7 @@ const createCollege = async function (req, res) {
 
     // Destructuring body
 
-    const { name, fullName } = requestBody;
+    const { name, fullName, logoLink } = requestBody;
 
     // Validation Starts
 
@@ -39,12 +39,29 @@ const createCollege = async function (req, res) {
         .send({ status: false, message: "Please provide name of the college" });
     }
 
+    let checkName = await collegeModel.findOne({ name: requestBody.name })
+            if (checkName) return res.status(400).send({ msg: "College Name already exist" })
+
     if (!isValid(fullName)) {
       return res.status(400).send({
         status: false,
         message: "Please provide fullName of the college",
       });
     }
+
+    if (!isValid(logoLink)) {
+      return res
+        .status(400)
+        .send({ status: false, message: "url is required" });
+    }
+
+    if (!(/^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/.test(logoLink))) {
+      return res
+        .status(400)
+        .send({ status: false, message: "url is not in correct format" });
+    }
+
+
 
     // Creating College
 
@@ -73,12 +90,12 @@ const listColleges = async (req, res) => {
     }
 
     const collegeId = await collegeModel
-      .findOne({ name: collegeName })
+      .findOne({ name: collegeName, isDeleted: false})
       .select({ _id: 1 });
     if (!collegeId) {
       return res.status(404).send({
         status: false,
-        message: "There are no colleges fonud with this name",
+        message: "There are no colleges found with this name",
       });
     }
 
@@ -103,7 +120,7 @@ const listColleges = async (req, res) => {
 
     res
       .status(200)
-      .send({ status: true, message: "Found the college details", data: obj });
+      .send({ status: true, data: obj });
   } catch (error) {
     res.status(500).send({ status: false, message: error.message });
   }

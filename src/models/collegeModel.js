@@ -15,6 +15,12 @@ const collegeSchema = new mongoose.Schema(
     logoLink: {
       type: String,
       required: "logoLnk is required field",
+      validate: {
+        validator: function (logoLink) {
+          return /^(?:http(s)?:\/\/)?[\w.-]+(?:\.[\w\.-]+)+[\w\-\._~:/?#[\]@!\$&'\(\)\*\+,;=.]+$/.test(logoLink);
+        },
+        message: "Enter a valid url",
+      },
     },
     isDeleted: {
       type: Boolean,
