@@ -2,6 +2,7 @@
 
 const mongoose = require("mongoose");
 const internModel = require("../models/internModel");
+const collegeModel = require("../models/collegeModel");
 
 // validators
 
@@ -15,8 +16,8 @@ const isValidRequestBody = function (requestBody) {
   return Object.keys(requestBody).length > 0;
 };
 
-const isValidObjectId = function (Objectid) {
-  return mongoose.Types.ObjectId.isValid(Objectid);
+const isValidObjectId = function (ObjectId) {
+  return mongoose.Types.ObjectId.isValid(ObjectId);
 };
 
 const createIntern = async function (req, res) {
@@ -67,9 +68,7 @@ const createIntern = async function (req, res) {
     
 
     if (
-      !/^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(
-        mobile
-      )
+      !/^(\+\d{1,2}\s?)?1?\-?\.?\s?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/.test(mobile)
     ) {
       return res
         .status(400)
@@ -83,7 +82,11 @@ const createIntern = async function (req, res) {
       return res
         .status(400)
         .send({ status: false, message: "Enter a valid ObjectId" });
-    }
+        }
+
+        let checkcollegeId = await collegeModel.findOne({_id: requestBody.collegeId })
+        console.log(checkcollegeId)
+            if (checkcollegeId==null) return res.status(400).send({ msg: "College doesn't exist" })
 
     //Creating Intern
 
